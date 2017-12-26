@@ -8,6 +8,60 @@ describe("terrajs", () => {
         terra = new TerraJS()
     })
 
+    describe("variable", () => {
+        it("is generated", () => {
+            terra.variable('var1', {
+                default: 'foo'
+            })
+            terra.variable('var2', {
+                default: 'bar'
+            })
+
+            expect(terra.generate()).toEqual({
+                variable: {
+                    var1: {
+                        default: 'foo'
+                    },
+                    var2: {
+                        default: 'bar'
+                    }
+                },
+                provider: [],
+                resource: {}
+            })
+        })
+
+        it("can be referenced in a resource", () => {
+            const variable = terra.variable('foo')
+
+            terra.resource('aws_vpc', 'vpc', {
+                cidr_block: variable.ref()
+            })
+
+            expect(terra.generate()).toEqual({
+                variable: {
+                    foo: {}
+                },
+                provider: [],
+                resource: {
+                    aws_vpc: {
+                        vpc: {
+                            cidr_block: "${var.foo}"
+                        }
+                    }
+                }
+            })
+        })
+       
+        it("doesn't allow duplicates", () => {
+            terra.variable('foo')
+
+            expect(() => {
+                terra.variable('foo')
+            }).toThrowError('The variable foo was already defined')
+        })
+    })
+
     describe("provider", () => {
         it("is generated", () => {
             terra.provider('aws', {
@@ -15,6 +69,7 @@ describe("terrajs", () => {
             })
 
             expect(terra.generate()).toEqual({
+                variable: {},
                 provider: [{
                     aws: {
                         region: 'eu-east-1'
@@ -32,6 +87,7 @@ describe("terrajs", () => {
             })
             
             expect(terra.generate()).toEqual({
+                variable: {},
                 provider: [],
                 resource: {
                     aws_vpc: {
@@ -49,6 +105,7 @@ describe("terrajs", () => {
             }))
             
             expect(terra.generate()).toEqual({
+                variable: {},
                 provider: [],
                 resource: {
                     aws_s3_bucket: {
@@ -68,6 +125,7 @@ describe("terrajs", () => {
             })
 
             expect(terra.generate()).toEqual({
+                variable: {},
                 provider: [],
                 resource: {
                     aws_vpc: {
@@ -90,6 +148,7 @@ describe("terrajs", () => {
             })
 
             expect(terra.generate()).toEqual({
+                variable: {},
                 provider: [],
                 resource: {
                     aws_vpc: {

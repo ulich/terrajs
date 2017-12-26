@@ -3,6 +3,16 @@ class TerraJS {
     constructor() {
         this.providers = []
         this.resources = {}
+        this.variables = {}
+    }
+
+    variable(name, properties = {}) {
+        if (this.variables[name]) {
+            throw new Error(`The variable ${name} was already defined`)
+        }
+
+        this.variables[name] = properties
+        return new Variable(name, properties)
     }
 
     provider(type, properties) {
@@ -25,6 +35,7 @@ class TerraJS {
 
     generate() {
         return {
+            variable: this.variables,
             provider: this.providers,
             resource: this.resources
         }
@@ -44,6 +55,17 @@ class Resource {
 
     ref(propertyName) {
         return `\${${this.type}.${this.name}.${propertyName}}`
+    }
+}
+
+class Variable {
+
+    constructor(name) {
+        this.name = name
+    }
+
+    ref() {
+        return `\${var.${this.name}}`
     }
 }
 
