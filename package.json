@@ -1,0 +1,17 @@
+{
+  "name": "terrajs",
+  "version": "1.0.0",
+  "description": "Generate terraform json templates by writing javascript code",
+  "main": "terrajs.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "jest": "^22.0.4"
+  },
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "keywords": [],
+  "author": "Timo Ulich",
+  "license": "MIT"
+}
