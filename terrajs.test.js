@@ -15,21 +15,13 @@ describe("terrajs", () => {
             })
 
             expect(terra.generate()).toEqual({
-                provider: {
+                provider: [{
                     aws: {
                         region: 'eu-east-1'
                     }
-                },
+                }],
                 resource: {}
             })
-        })
-
-        it("doesnt allow duplicates", () => {
-            terra.provider('aws', {})
-
-            expect(() => {
-                terra.provider('aws', {})
-            }).toThrowError('The provider aws was already defined')
         })
     })
 
@@ -40,7 +32,7 @@ describe("terrajs", () => {
             })
             
             expect(terra.generate()).toEqual({
-                provider: {},
+                provider: [],
                 resource: {
                     aws_vpc: {
                         example: {
@@ -57,7 +49,7 @@ describe("terrajs", () => {
             }))
             
             expect(terra.generate()).toEqual({
-                provider: {},
+                provider: [],
                 resource: {
                     aws_s3_bucket: {
                         example: {
@@ -76,7 +68,7 @@ describe("terrajs", () => {
             })
 
             expect(terra.generate()).toEqual({
-                provider: {},
+                provider: [],
                 resource: {
                     aws_vpc: {
                         vpc: {}
@@ -98,7 +90,7 @@ describe("terrajs", () => {
             })
 
             expect(terra.generate()).toEqual({
-                provider: {},
+                provider: [],
                 resource: {
                     aws_vpc: {
                         production: {}

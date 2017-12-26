@@ -1,15 +1,12 @@
 class TerraJS {
 
     constructor() {
-        this.providers = {}
+        this.providers = []
         this.resources = {}
     }
 
     provider(type, properties) {
-        if (this.providers[type]) {
-            throw new Error(`The provider ${type} was already defined`)
-        }
-        this.providers[type] = properties
+        this.providers.push({ [type]: properties })
     }
 
     resource(type, name, properties) {
